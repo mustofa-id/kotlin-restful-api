@@ -6,18 +6,18 @@ import javax.validation.constraints.NotNull
 
 data class CreateProductRequest(
 
-        @field:NotBlank
+        @NotBlank
         val id: String?,
 
-        @field:NotBlank
+        @NotBlank
         val name: String?,
 
-        @field:NotNull
-        @field:Min(value = 1)
+        @NotNull
+        @Min(value = 1)
         val price: Long?,
 
-        @field:NotNull
-        @field:Min(value = 0)
+        @NotNull
+        @Min(value = 0)
         val quantity: Int?
 
 )

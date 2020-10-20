@@ -6,15 +6,15 @@ import javax.validation.constraints.NotNull
 
 data class UpdateProductRequest(
 
-        @field:NotBlank
+        @NotBlank
         val name: String?,
 
-        @field:NotNull
-        @field:Min(1)
+        @NotNull
+        @Min(1)
         val price: Long?,
 
-        @field:NotNull
-        @field:Min(0)
+        @NotNull
+        @Min(0)
         val quantity: Int?
 
 )

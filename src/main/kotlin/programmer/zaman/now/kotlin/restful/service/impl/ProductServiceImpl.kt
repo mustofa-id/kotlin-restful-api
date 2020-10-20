@@ -66,28 +66,23 @@ class ProductServiceImpl(
     }
 
     override fun list(listProductRequest: ListProductRequest): List<ProductResponse> {
-        val page = productRepository.findAll(PageRequest.of(listProductRequest.page, listProductRequest.size))
-        val products: List<Product> = page.get().collect(Collectors.toList())
-        return products.map { convertProductToProductResponse(it) }
+        val pageReq = listProductRequest.run { PageRequest.of(page, size) }
+        val page = productRepository.findAll(pageReq)
+        return page.content.map(this::convertProductToProductResponse)
     }
 
-    private fun findProductByIdOrThrowNotFound(id: String): Product {
-        val product = productRepository.findByIdOrNull(id)
-        if (product == null) {
-            throw NotFoundException()
-        } else {
-            return product;
-        }
-    }
+    private fun findProductByIdOrThrowNotFound(id: String) =
+            when (val product = productRepository.findByIdOrNull(id)) {
+                null -> throw NotFoundException()
+                else -> product
+            }
 
-    private fun convertProductToProductResponse(product: Product): ProductResponse {
-        return ProductResponse(
-                id = product.id,
-                name = product.name,
-                price = product.price,
-                quantity = product.quantity,
-                createdAt = product.createdAt,
-                updatedAt = product.updatedAt
-        )
-    }
+    private fun convertProductToProductResponse(product: Product) = ProductResponse(
+            id = product.id,
+            name = product.name,
+            price = product.price,
+            quantity = product.quantity,
+            createdAt = product.createdAt,
+            updatedAt = product.updatedAt
+    )
 }

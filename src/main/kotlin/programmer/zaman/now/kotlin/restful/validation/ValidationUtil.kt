@@ -9,7 +9,7 @@ class ValidationUtil(val validator: Validator) {
 
     fun validate(any: Any) {
         val result = validator.validate(any)
-        if (result.size != 0) {
+        if (result.isNotEmpty()) {
             throw ConstraintViolationException(result)
         }
     }
